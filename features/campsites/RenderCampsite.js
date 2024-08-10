@@ -54,7 +54,6 @@ const RenderCampsite = (props) => {
                 delay={1000}
                 ref= {view}
                 {...panResponder.panHandlers}
-                
             >
                 <Card cotainerStyle={styles.cardContainer}>
                     <Card.Image source={{ uri: baseUrl + campsite.image}}>
