@@ -276,7 +276,7 @@ const Main = () => {
 
         Platform.OS === 'ios'
             ? Alert.alert('Connection change: ', connectionMsg)
-            : ToastAndroid.show(connectionMsg, ToastAndroid.LONG);
+            : ToastAndroid.show(connectionMsg, ToastAndroid.LONG);r
     }
 
     return (
