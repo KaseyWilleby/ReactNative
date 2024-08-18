@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView, Image } from "react-native";
 import { CheckBox, Input, Button, Icon } from "react-native-elements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as ImageManipulator from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import baseUrl from '../shared/baseUrl';
 import logo from '../assets/images/logo.png';
@@ -152,10 +153,36 @@ const RegisterTab = () => {
             });
             if (capturedImage.assets) {
                 console.log(capturedImage.assets[0]);
-                setImageUrl(capturedImage.assets[0].uri);
+                processImage(capturedImage.assets[0].uri);
             }
         }
     };
+
+    const processImage = async (imgUri) => {
+        const processedImage = await ImageManipulator.manipulateAsync(
+            imgUri,
+            [{ resize: { width: 400 }}],
+            {format: ImageManipulator.SaveFormat.PNG}
+            );
+
+        console.log(processedImage);
+        setImageUrl(processedImage.uri);
+        };
+    
+    const getImageFromGallery = async () => {
+        const mediaLibraryPermissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (mediaLibraryPermissions.status === 'granted') {
+            const capturedImage = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [1,1]
+            });
+            if (capturedImage.assets) {
+            console.log(capturedImage.assets[0]);
+            processImage(capturedImage.assets[0].uri)
+            }
+        }
+    }
 
     return (<ScrollView>
         <View style={styles.container}>
@@ -164,6 +191,10 @@ const RegisterTab = () => {
                     source={{ uri: imageUrl }}
                     loadingIndicatorSource={logo}
                     style={styles.image}
+                />
+                <Button 
+                    title='Gallery'
+                    onPress={getImageFromGallery}
                 />
                 <Button 
                     title='Camera'
