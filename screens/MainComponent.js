@@ -1,4 +1,5 @@
 import { Image, Platform,StyleSheet, View, Text } from 'react-native';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import Constants from 'expo-constants';
 import DirectoryScreen from './DirectoryScreen';
 import CampsiteInfoScreen from './CampsiteInfoScreen';
@@ -153,10 +154,15 @@ const LoginNavigator = () => {
             <Stack.Screen
                 name='Login'
                 component={LoginScreen}
-                options={({ navigation }) => ({
+                options={({ navigation, route }) => ({
                     headerLeft: () => (
                         <Icon
-                            name='sign-in'
+                            name={
+                                getFocusedRouteNameFromRoute(route) ===
+                                'Register'
+                                    ? 'user-plus'
+                                    : 'sign-in'
+                            }
                             type='font-awesome'
                             iconStyle={styles.stackIcon}
                             onPress={() => navigation.toggleDrawer()}
